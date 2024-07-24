@@ -1,0 +1,55 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New' ;
+
+    color: #fff;
+}
+
+body{
+    background-color: #0e1015d9;
+}
+
+.brading{
+    font-weight: 500;
+    border: 2px solid black;
+    left: 3vw;
+    border-radius: 2vw;
+    width: 25%;
+    height: 2vw;
+    position: relative;
+    top: -1.5vw;
+    font-family: 'Courier New';
+    font-size: 1.3rem;
+    display: flex;
+}
+.Text_cont{
+    border: 2px solid black;
+}
+.main{
+    left: 13%;
+    width: 75%;
+    height: 18vw;
+    position: relative;
+    top: 6vw;
+    border: 2px solid black;
+
+}
+
+.main pre{
+    float: left;
+
+   
+}
+#input_word{
+    outline: none;
+    color: transparent;
+    opacity: -1;
+}
+
+.uncorrect{
+    color : red;
+}
+.correct{
+    color: limegreen;
+}
