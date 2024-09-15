@@ -1,57 +1,39 @@
 
 let input_box = document.querySelector('.main')
 let input_Word = document.querySelector('#input_word')
-let db = 'helLo i am from micro proccessor 86x v helLo i am from micro proccessor 86x helLo i am from micro proccessor 86x helLo i am from micro proccessor 86x  micro proccessor 86x helLo i am from micro proccessor 86x  i am from micro proccessor 86x i am from micro proccessor 86x i am from micro proccessor 86x'
+let db = 'helLo i am from micro proccessor 86x v helLo i am from micro proccessor 86x helLo i am from micro proccessor 86x helLo i am from micro proccessor 86x micro proccessor 86x helLo i am from micro proccessor 86x i am from micro proccessor 86x i am from micro proccessor 86x i am from micro proccessor 86x'
 let alphabate = document.querySelectorAll('.text')
 var i = 0;
-const time = new Date()
-
-
-let typingspeed = {
-    correct: 0,
-    incorrect: 0,
-    startTime: null,
-    endTime: null,
-    totalTime: null,
-
-    accuracy: function() {
-        if (this.correct + this.incorrect === 0) {
-            return 0;
-        } else {
-            return (this.correct * 100) / (this.correct + this.incorrect);
-        }
-    },
-
-    speed: function() {
-        const charactersPerMinute = (this.correct / this.totalTime) * 60;
-        return charactersPerMinute;
-    }
- 
-};
-
-
-//getting input from the user by this event lisnter
+let class_selector_number = 0
+let inner_text_number = 0
+let word_length = 0
+//getting input from the user by this event listner
 //object that need to be write in other file
 
-input_word.addEventListener('keypress', (e) => {
-       Match(e)
-})
 
-input_box.addEventListener('click', () => {
-    input_Word.focus()
-})
+
 
 // addphrase()
 
 //add  text to be inputed
 
-let addpahers  = function (){
-    
-    for(let i = 0 ; i<db.length ;i++){
-        const word = document.createElement("pre")     
-        word.classList.add('text')
-        word.innerText  += db[i] 
+let addpahers = function () {
+    let new_lines = stringMatrix(db)
+    let classnameNumber = 0
+    for (let i = 0; i < new_lines.length; i++) {
+        let classnameNumber_inner = 0
+        const word = document.createElement("pre")
+        word.classList.add(`text${classnameNumber}`)
+        // word.innerText  += new_lines[i]
+        for (let m = 0; m < new_lines[i].length; m++) {
+            const alpha = document.createElement("span")
+            alpha.classList.add(`inner_text${classnameNumber}${classnameNumber_inner}`)
+            alpha.innerText += new_lines[i][m]
+            word.appendChild(alpha)
+            classnameNumber_inner++ 
+        }
         input_box.appendChild(word)
+        classnameNumber++
     }
 }
 function stringMatrix(arg) {
@@ -64,47 +46,71 @@ function stringMatrix(arg) {
 
     return final_res
 }
- 
 
-let converted_string =  stringMatrix(db)        //calling strigmartrix function
-let index = 0 ;
+
+
+
+
+let converted_string = stringMatrix(db)        //calling strigmartrix function
+
 
 //function that match
-let emptystring = ''; 
-function Match(e) {   
-    emptystring += e.key ; 
-    if (e.key === db[i]) {
-        effect(".text",i,"correct")                 
-        if(emptystring===converted_string[index]){
-            typingspeed.correct += 1
-            emptystring = '';
-            index++
-            console.log("correct")
-        } 
 
+input_box.addEventListener('click', () => {input_Word.focus()})
+input_Word.addEventListener('input',(e)=>{
+    Match_Character(e.data)
+})
 
-        i++
-    } else {
-        let temp = Array.from(emptystring).splice(emptystring.length-1,1)
-        console.log(emptystring,temp)
-    //    let temp = emptystring.slice(0,emptystring.length-1)
-    //     emptystring = temp
-    //        console.log(temp,emptystring)
-        typingspeed.incorrect +=1;
-        effect(".text",i,"uncorrect")
-        i++
+let temp_class_selector = document.querySelector(`.inner_text${class_selector_number}${inner_text_number}`)
+
+function Match_Character(e) {
+    let alpha_class_name = `.inner_text${class_selector_number}${inner_text_number}`
+    let word_selector = document.querySelector(`.text${class_selector_number}`) 
+    let alphabate_selector = document.querySelector(alpha_class_name)
+    let  t = e=== alphabate_selector.innerText;
+    console.log(alphabate_selector.innerText)
+    if(e===alphabate_selector.innerText){
+       
+        inner_text_number++
+        effect(alpha_class_name,"correct")
+        
+     
+        word_length++
+    
+    }  else if (e===null){
+              if(inner_text_number===0){
+                class_selector_number--
+                let temp_word_selector = document.querySelector(`.text${class_selector_number}`).children.length
+                inner_text_number = temp_word_selector-1
+              }else{
+
+              }
+    }else {
+        inner_text_number++
+        effect(alpha_class_name,"incorrect")
+        if(word_selector.children.length===word_length){
+
+        }
+        word_length++
     }
-   
+    if(word_selector.children.length===word_length){
+        class_selector_number += 1
+        inner_text_number = 0
+        word_length = 0
+        
+    }
     
-}
-addpahers()
-console.log(typingspeed.correct)
-//A function that shows the user their correct and incorrect inputs using visual effects 
-function effect(className,i,correct_or_not){ 
 
-    const active  = document.querySelectorAll(className)
-    let arr = Array.from(active)
-    
-    arr[i].classList.add(correct_or_not);
   }
+
   
+
+
+
+addpahers()
+
+//A function that shows the user their correct and incorrect inputs using visual effects 
+function effect(className, correct_or_not) {
+    const active = document.querySelector(className)
+    active.classList.add(correct_or_not);
+}
